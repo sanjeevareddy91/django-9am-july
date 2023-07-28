@@ -1,4 +1,4 @@
-from django.forms import ModelForm,Form
+from django.forms import ModelForm,Form,CharField,ImageField,IntegerField
 from .models import Team_Info
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
@@ -26,3 +26,10 @@ class Team_InfoModelForm(ModelForm):
             ),
             Submit('submit', 'Save')
         )
+
+class TeamInfoForm(Form):
+    team_name = CharField(max_length=30)
+    nick_name = CharField(max_length=4)
+    team_logo = ImageField()
+    captain_name = CharField(max_length=25)
+    started_year = IntegerField()
