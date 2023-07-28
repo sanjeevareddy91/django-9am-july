@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color:white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=file], input[type=number], input[type=email]{
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit button */
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity: 1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+  <div class="container">
+    <p>Please fill the Team Details</p>
+    <hr>
+
+    <label for="team_name"><b>Team Name</b></label>
+    <input type="text" placeholder="Enter Team Name" name="team_name" id="team_name" maxlength="30" required>
+
+    <label for="nick_name"><b>Nick Name</b></label>
+    <input type="text" placeholder="Enter Nick Name" name="nick_name" id="nick_name" maxlength="4" required>
+
+    <label for="team_logo"><b>Team Logo</b></label>
+    <input type="file" placeholder="Upload Logo" name="team_logo" id="team_logo">
+
+    <label for="captain_name"><b>Captain Name</b></label>
+    <input type="text" placeholder="Enter Captain Name" name="captain_name" id="captain_name" maxlength="25" required>
+
+    <label for="started_year"><b>Started Year</b></label>
+    <input type="number" placeholder="Enter Started Year" name="started_year" id="started_year" min="2000" max="2100" required>
+
+    <hr>
+
+    <button type="submit" class="registerbtn">Add Team</button>
+  </div>
+
+</form>
+
+</body>
+</html>
+{% endblock %}
