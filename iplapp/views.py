@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Team_Info
-from .forms import Team_InfoModelForm
+from .forms import Team_InfoModelForm,TeamInfoForm
 from django.contrib import messages
 # Create your views here.
 
@@ -87,5 +87,18 @@ def team_modelform(request):
         form = Team_InfoModelForm()
     return render(request,'model_form.html',{'form':form})
 
+def team_info_form(request):
+    if request.method == "POST":
+        form = TeamInfoForm(request.POST,request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            Team_Info.objects.create(**data)
+            return HttpResponse("Team Added")
+        else:
+            return HttpResponse("Form invalid")
+    else:
+        form = TeamInfoForm()
+    return render(request,'normal_form.html',{'form':form})
+    
 def register_user(request):
     return render(request,'register_user.html')
