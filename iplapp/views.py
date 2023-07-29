@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Team_Info
+from .models import Team_Info,RegisteredUser
 from .forms import Team_InfoModelForm,TeamInfoForm
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login
 # Create your views here.
 
 def hello_world(request):
@@ -101,4 +103,37 @@ def team_info_form(request):
     return render(request,'normal_form.html',{'form':form})
     
 def register_user(request):
+    if request.method == "POST":
+        data = {keys:request.POST[keys] for keys in request.POST if keys != 'csrfmiddlewaretoken'}
+        print(data)
+        data['username'] = data['email'].split('@')[0] # sanjeev@gmail.com --> ['sanjeev','gmail.com']
+        print(data)
+        user_data = User(username=data['username'],email=data['email'])
+        user_data.set_password(data['password'])
+        user_data.save()
+        RegisteredUser.objects.create(mobile=data['mobile'],user=user_data)
+        messages.success(request,"User added successfully!")
+        return redirect('login_user')
     return render(request,'register_user.html')
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user_data = User.objects.filter(username=username) | User.objects.filter(email=username)
+        # import pdb;pdb.set_trace()
+        if user_data:
+            print(user_data)
+            username = user_data[0].username
+            # username = user_data.first().username
+            user = authenticate(username=username,password=password)
+            if user:
+                login(request,user)
+                messages.success(request,f"{user.username} loggedin successfully")
+                return redirect('list_team')
+            else:
+                messages.error(request,"username and password not matched")
+        else:
+            messages.error(request,'No account existed with username or email')
+        # import pdb;pdb.set_trace()
+    return render(request,'login.html')
