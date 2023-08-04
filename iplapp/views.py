@@ -5,8 +5,11 @@ from .forms import Team_InfoModelForm,TeamInfoForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
 
+# Function Based Views
 def hello_world(request):
     return HttpResponse("Hello World!")
 
@@ -137,3 +140,26 @@ def login_user(request):
             messages.error(request,'No account existed with username or email')
         # import pdb;pdb.set_trace()
     return render(request,'login.html')
+
+
+# Class Based Views:
+
+
+
+# Django Rest Framework
+
+
+# HTTP Methods:
+    # GET
+    # POST
+    # PUT
+    # DELETE
+
+
+# Function Based APIS
+@api_view(['GET','POST'])
+def rest_hello(request):
+    if request.method == "GET":
+        return Response({'message':"Hello World!"})
+    else:
+        return Response(request.data)

@@ -12,5 +12,6 @@ urlpatterns = [
     path('modelform/',views.team_modelform,name="model_form"),
     path('normalform/',views.team_info_form,name="normal_form"),
     path('registeruser/',views.register_user,name="register_user"),
-    path('login/',views.login_user,name="login_user")
+    path('login/',views.login_user,name="login_user"),
+    path('rest_hello/',views.rest_hello,name="rest_hello")
 ]
