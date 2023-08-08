@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{% for team in object_list %}
+    <a href="{% url 'update_team' team.id %}">{{team.team_name}}</a><br>
+{% endfor %}
+
+<a href="{% url 'add_team' %}"><button>Add Team</button></a>
+{% endblock %}

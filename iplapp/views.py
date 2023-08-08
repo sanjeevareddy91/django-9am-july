@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views import View
 # Create your views here.
 
 # Function Based Views
@@ -144,7 +145,66 @@ def login_user(request):
 
 # Class Based Views:
 
+class HelloView(View):
+    def get(self,request):
+        return HttpResponse("Hello World!")
 
+# 1st way
+# class RegisterView(View):
+#     def get(self,request):
+#         return render(request,"register.html")
+
+# 2nd Way
+
+from django.views.generic.base import TemplateView
+
+class RegisterView(TemplateView):
+    template_name = 'register.html'
+
+
+# CreateView
+
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+
+class TeamCreateView(CreateView):
+    model  = Team_Info
+    fields = "__all__"
+    success_url = reverse_lazy('list_team')
+
+
+# ListView
+from django.views.generic.list import ListView
+
+class TeamListView(ListView):
+    model  = Team_Info
+
+
+# DetailView
+
+from django.views.generic.detail import DetailView
+
+class TeamDetailView(DetailView):
+    model  = Team_Info
+
+
+# UpdateView
+
+from django.views.generic.edit import UpdateView
+
+class TeamUpdateView(UpdateView):
+    model  = Team_Info
+    fields = "__all__"
+    success_url = reverse_lazy('list_team')
+
+# DeleteView
+
+from django.views.generic.edit import DeleteView
+
+class TeamDeleteView(DeleteView):
+    model  = Team_Info
+    fields = "__all__"
+    success_url = reverse_lazy('list_team')
 
 # Django Rest Framework
 
@@ -163,3 +223,29 @@ def rest_hello(request):
         return Response({'message':"Hello World!"})
     else:
         return Response(request.data)
+
+@api_view(['GET','POST'])
+def add_team_api(request):
+    if request.method == "GET":
+        # data = Team_Info.objects.all()
+        # import pdb;pdb.set_trace()
+        # print(data)
+        # team_data = []
+        # for ele in data:
+        #     dict_data = {}
+        #     dict_data['team_name'] = ele.team_name
+        #     dict_data['nick_name'] = ele.nick_name
+        #     dict_data['captain_name'] = ele.captain_name
+        #     dict_data['started_year'] = ele.started_year
+        #     team_data.append(dict_data)
+
+        # 2nd way
+        data = Team_Info.objects.values()
+        return Response({"status":"success","teams":data})
+    else:
+        data = request.data
+        Team_Info.objects.create(**data)
+        return Response({
+            'message':"Team Added Successfully",
+            "team":data
+        })
