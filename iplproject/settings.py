@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'iplproject',
         'USER': 'root',
-        'PASSWORD' : ''
+        'PASSWORD' : 'password'
     }
 }
 

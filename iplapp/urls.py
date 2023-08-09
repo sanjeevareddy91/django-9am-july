@@ -23,5 +23,6 @@ urlpatterns = [
     path('cls_teamupdateview/<pk>',views.TeamUpdateView.as_view(),name="cls_teamupdateview"),
     path('cls_teamdeleteview/<pk>',views.TeamDeleteView.as_view(),name="cls_teamdeleteview"),
     # Function Based Apis
-    path('add_teamapi',views.add_team_api,name="add_teamapi")
+    path('add_teamapi',views.add_team_api,name="add_teamapi"),
+    path('team_get_update_delete_api/<id>',views.team_get_update_delete_api,name="team_get_update_delete_api")
 ]

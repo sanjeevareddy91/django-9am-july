@@ -244,8 +244,38 @@ def add_team_api(request):
         return Response({"status":"success","teams":data})
     else:
         data = request.data
+        if len(data['team_name'])>30 or len(data['nick_name'])>4:
+            return Response({"message":"Data is invalid"})
+        
         Team_Info.objects.create(**data)
         return Response({
             'message':"Team Added Successfully",
             "team":data
         })
+
+@api_view(['GET','PUT','DELETE'])
+def team_get_update_delete_api(request,id):
+    data = Team_Info.objects.filter(id=id)
+    if request.method == "GET":
+        data = data.values()
+        if data:
+            return Response({'message':"GET Successful","data":data[0]})
+        else:
+            return Response({'message':"Team with this ID doesnot exist"})
+    elif request.method == "PUT":
+        if data:
+            data.update(**request.data)
+            return Response({
+                'message':"Team Updated Successfully",
+                "team": request.data
+            })
+        else:
+            return Response({'message':"Team with this ID doesnot exist"})
+    elif request.method == "DELETE":
+        if data:
+            data.delete()
+            return Response({
+                'message':"Team Deleted Successfully",
+            })
+        else:
+            return Response({'message':"Team with this ID doesnot exist"})
