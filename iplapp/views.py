@@ -279,3 +279,40 @@ def team_get_update_delete_api(request,id):
             })
         else:
             return Response({'message':"Team with this ID doesnot exist"})
+
+# Funcation based apis with serializers
+
+from .serializers import TeamInfoSerializer
+
+@api_view(['GET','POST'])
+def serializers_addteam_api(request):
+    if request.method == "GET":
+        data = Team_Info.objects.all()
+        serializer = TeamInfoSerializer(data,many=True)
+        return Response({"teams":serializer.data})
+
+    else:
+        serializer = TeamInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status':'success','team':serializer.data})
+        else:
+            return Response({'status':'failed','message':'Data validation missing'})
+
+@api_view(['GET','PUT','DELETE'])
+def serializer_team_get_update_delete_api(request,id):
+    data = Team_Info.objects.get(id=id)
+    if request.method == "GET":
+        serializer = TeamInfoSerializer(data)
+        return Response({"team":serializer.data})
+    elif request.method == "PUT":
+        serializer = TeamInfoSerializer(data,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status':'success','team':serializer.data})
+        else:
+            return Response({'status':'failed','message':'Data validation missing'})
+
+    elif request.method == "DELETE":
+        data.delete()
+        return Response({"status":"success","message":"Team Deleted Successfully"})

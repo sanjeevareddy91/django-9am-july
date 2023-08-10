@@ -24,5 +24,7 @@ urlpatterns = [
     path('cls_teamdeleteview/<pk>',views.TeamDeleteView.as_view(),name="cls_teamdeleteview"),
     # Function Based Apis
     path('add_teamapi',views.add_team_api,name="add_teamapi"),
-    path('team_get_update_delete_api/<id>',views.team_get_update_delete_api,name="team_get_update_delete_api")
+    path('team_get_update_delete_api/<id>',views.team_get_update_delete_api,name="team_get_update_delete_api"),
+    path('serializers_addteam_api/',views.serializers_addteam_api,name="serializers_addteam_api"),
+    path('serializer_team_get_update_delete_api/<id>',views.serializer_team_get_update_delete_api,name='serializer_team_get_update_delete_api')
 ]
