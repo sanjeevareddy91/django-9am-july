@@ -316,3 +316,89 @@ def serializer_team_get_update_delete_api(request,id):
     elif request.method == "DELETE":
         data.delete()
         return Response({"status":"success","message":"Team Deleted Successfully"})
+
+# Class Based APIs
+
+# APIVIEW
+
+from rest_framework.views import APIView
+from django.http import Http404
+
+class CBSampleAPIView(APIView):
+    def get(self,request):
+        return Response({"message":"Hello World!"})
+    
+    def post(self,request):
+        return Response({"data":request.data})
+
+
+class CBAddTeam_API(APIView):
+    def get(self,request):
+        data = Team_Info.objects.all()
+        serializer = TeamInfoSerializer(data,many=True)
+        return Response({"teams":serializer.data})
+    
+    def post(self,request):
+        serializer = TeamInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status':'success','team':serializer.data})
+        else:
+            return Response({'status':'failed','message':'Data validation missing'})
+
+class CBAddTeam_API_withID(APIView):
+    def get_object(self, pk):
+        try:
+            return Team_Info.objects.get(pk=pk)
+        except Team_Info.DoesNotExist:
+            raise Http404
+
+    def get(self,request,pk):
+        data = self.get_object(pk)
+        serializer = TeamInfoSerializer(data)
+        return Response({"team":serializer.data})
+    def put(self,request,pk):
+        data = self.get_object(pk)
+        serializer = TeamInfoSerializer(data,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status':'success','team':serializer.data})
+        else:
+            return Response({'status':'failed','message':'Data validation missing'})
+    def delete(self,request,pk):
+        data = self.get_object(pk)
+        data.delete()
+        return Response({"status":"success","message":"Team Deleted Successfully"})
+
+# Generic ApiViews
+
+from rest_framework import generics
+
+class TeamInfoListView(generics.ListAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+
+class TeamInfoCreateView(generics.CreateAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+class TeamInfoRetrieveView(generics.RetrieveAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+class TeamInfoUpdateView(generics.UpdateAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+class TeamInfoDestroyView(generics.DestroyAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+class TeamInfoListCreateView(generics.ListCreateAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+class TeamInfoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer

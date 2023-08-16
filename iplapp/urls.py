@@ -26,5 +26,15 @@ urlpatterns = [
     path('add_teamapi',views.add_team_api,name="add_teamapi"),
     path('team_get_update_delete_api/<id>',views.team_get_update_delete_api,name="team_get_update_delete_api"),
     path('serializers_addteam_api/',views.serializers_addteam_api,name="serializers_addteam_api"),
-    path('serializer_team_get_update_delete_api/<id>',views.serializer_team_get_update_delete_api,name='serializer_team_get_update_delete_api')
+    path('serializer_team_get_update_delete_api/<id>',views.serializer_team_get_update_delete_api,name='serializer_team_get_update_delete_api'),
+    path('cbsample_apiview',views.CBSampleAPIView.as_view(),name='cbsample_apiview'),
+    path('cbaddteam_api',views.CBAddTeam_API.as_view(),name='cbaddteam_api'),
+    path('cbaddteam_api/<pk>',views.CBAddTeam_API_withID.as_view()),
+    path('team_info_listapiview',views.TeamInfoListView.as_view()),
+    path('team_info_createapiview',views.TeamInfoCreateView.as_view()),
+    path('team_info_retrieveapiview/<pk>',views.TeamInfoRetrieveView.as_view()),
+    path('team_info_updateapiview/<pk>',views.TeamInfoUpdateView.as_view()),
+    path('team_info_destroyapiview/<pk>',views.TeamInfoDestroyView.as_view()),
+    path('team_info_listcreateapiview/',views.TeamInfoListCreateView.as_view()),
+    path('team_info_retrieveupdatedestroyapiview/<pk>',views.TeamInfoRetrieveUpdateDestroyView.as_view())
 ]
