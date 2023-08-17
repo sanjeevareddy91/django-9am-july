@@ -36,5 +36,17 @@ urlpatterns = [
     path('team_info_updateapiview/<pk>',views.TeamInfoUpdateView.as_view()),
     path('team_info_destroyapiview/<pk>',views.TeamInfoDestroyView.as_view()),
     path('team_info_listcreateapiview/',views.TeamInfoListCreateView.as_view()),
-    path('team_info_retrieveupdatedestroyapiview/<pk>',views.TeamInfoRetrieveUpdateDestroyView.as_view())
+    path('team_info_retrieveupdatedestroyapiview/<pk>',views.TeamInfoRetrieveUpdateDestroyView.as_view()),
+    path('team_info_viewset_list',views.TeamInfoViewset.as_view({'get':'list'})),
+    path('team_info_viewset_retrieve/<pk>',views.TeamInfoViewset.as_view({'get':'retrieve'})),
+    path('cbaddteam_apiauth',views.CBAddTeam_APIAuth.as_view(),name='cbaddteam_apiauth'),
 ]
+
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+
+router.register(r'teams',views.TeamInfoViewset,basename='teams')
+
+router.register(r'teamsmodelviewset',views.TeamInfoModelViewset,basename='teamsmodelviewset')
+urlpatterns = urlpatterns + router.urls

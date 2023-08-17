@@ -402,3 +402,57 @@ class TeamInfoListCreateView(generics.ListCreateAPIView):
 class TeamInfoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Team_Info.objects.all()
     serializer_class  = TeamInfoSerializer
+
+# Viewsets
+from rest_framework import viewsets
+
+
+# get - list
+# post - create
+# get - retrieve
+# put - update
+# delete - destroy
+
+class TeamInfoViewset(viewsets.ViewSet):
+
+    def list(self,request):
+        data = Team_Info.objects.all()
+        serializer = TeamInfoSerializer(data,many=True)
+        return Response(serializer.data)
+
+    def retrieve(self,request,pk):
+        data = Team_Info.objects.get(id=pk)
+        serializer = TeamInfoSerializer(data)
+        return Response(serializer.data)
+
+
+# ModelViewsets
+
+class TeamInfoModelViewset(viewsets.ModelViewSet):
+    queryset = Team_Info.objects.all()
+    serializer_class  = TeamInfoSerializer
+
+    # Custom modelviewsets
+
+    # def list(self,request):
+    #     return Response({"message":"List method called!"})
+
+# Adding authentication to the apis
+
+from rest_framework.permissions import IsAuthenticated
+
+class CBAddTeam_APIAuth(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        data = Team_Info.objects.all()
+        serializer = TeamInfoSerializer(data,many=True)
+        return Response({"teams":serializer.data})
+    
+    def post(self,request):
+        serializer = TeamInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status':'success','team':serializer.data})
+        else:
+            return Response({'status':'failed','message':'Data validation missing'})

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'iplapp',
     'crispy_forms',
     'crispy_bootstrap4',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -151,4 +152,10 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ]
 }
