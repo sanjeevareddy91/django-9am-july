@@ -40,6 +40,7 @@ urlpatterns = [
     path('team_info_viewset_list',views.TeamInfoViewset.as_view({'get':'list'})),
     path('team_info_viewset_retrieve/<pk>',views.TeamInfoViewset.as_view({'get':'retrieve'})),
     path('cbaddteam_apiauth',views.CBAddTeam_APIAuth.as_view(),name='cbaddteam_apiauth'),
+    path('register_userapi/',views.register_userapi)
 ]
 
 from rest_framework.routers import DefaultRouter

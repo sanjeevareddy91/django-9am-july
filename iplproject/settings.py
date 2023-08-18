@@ -154,8 +154,17 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+# Token Authentication
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication'
+#     ]
+# }
+
+
+# JWT Authentication
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ]
 }

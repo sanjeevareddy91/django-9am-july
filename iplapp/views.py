@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate,login
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views import View
+from rest_framework.authtoken.models import Token
 # Create your views here.
 
 # Function Based Views
@@ -456,3 +457,16 @@ class CBAddTeam_APIAuth(APIView):
             return Response({'status':'success','team':serializer.data})
         else:
             return Response({'status':'failed','message':'Data validation missing'})
+
+@api_view(['POST'])
+def register_userapi(request):
+    if request.method == "POST":
+        data = request.data
+        data['username'] = data['email'].split('@')[0] # sanjeev@gmail.com --> ['sanjeev','gmail.com']
+        print(data)
+        user_data = User(username=data['username'],email=data['email'])
+        user_data.set_password(data['password'])
+        user_data.save()
+        RegisteredUser.objects.create(mobile=data['mobile'],user=user_data)
+        Token.objects.create(user=user_data)
+        return Response({"message":"User added successfully"})
