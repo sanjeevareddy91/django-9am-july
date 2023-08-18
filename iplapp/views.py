@@ -4,7 +4,10 @@ from .models import Team_Info,RegisteredUser
 from .forms import Team_InfoModelForm,TeamInfoForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.core.mail import send_mail
+from django.contrib.auth import authenticate,login,logout
+import random
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views import View
@@ -142,6 +145,58 @@ def login_user(request):
             messages.error(request,'No account existed with username or email')
         # import pdb;pdb.set_trace()
     return render(request,'login.html')
+def logout_user(request):
+    logout(request)
+    messages.success(request,"Logged Out!")
+    return redirect('login_user')
+
+def forgot_password_email_check(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        email_check = User.objects.filter(email=email)
+        if email_check:
+            otp = random.randint(100000,999999)
+            user_info = UserInfo.objects.get(user_data=email_check.first())
+            user_info.verify_code = otp 
+            user_info.save()
+            message = f"""Please you the below otp for your password change action \n
+            OTP : {otp}"""
+            send_mail('Password Change Verification Code',message,'gsanjeevreddy91@gmail.com',[email])
+            messages.success(request,"OTP has been sent to registered email")
+            return redirect('verify_otp')
+        else:
+            messages.error(request,"User with this email doesnot exist!")
+    return render(request,'forgot_password_email_check.html')
+
+
+def verify_otp(request):
+    if request.method == "POST":
+        otp = request.POST['otp']
+        check = UserInfo.objects.filter(verify_code=otp)
+        if check:
+            # print(check)
+            user_id = check.first().user_data.id
+            # import pdb;pdb.set_trace()
+            messages.success(request,"OTP verified successfully")
+            return redirect('change_password',user_id)
+        else:
+            messages.error(request,"OTP Mismatched,please check it clearly")
+    return render(request,'otp_verification.html')
+
+
+def change_password(request,pk):
+    if request.method == "POST":
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        if password != confirm_password:
+            messages.error(request,"Entered password mismatch")
+        else:
+            user_data = User.objects.get(id=pk)
+            user_data.set_password(password)
+            user_data.save()
+            messages.success(request,"Password Changed successfully")
+            return redirect('login_user')
+    return render(request,'change_password.html')
 
 
 # Class Based Views:
