@@ -160,6 +160,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your email'
+EMAIL_HOST_PASSWORD = 'your app password'
+EMAIL_USE_TLS = True
+
 # Token Authentication
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': [
