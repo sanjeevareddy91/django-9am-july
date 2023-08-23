@@ -401,6 +401,7 @@ class TeamInfoListCreateView(generics.ListCreateAPIView):
     serializer_class  = TeamInfoSerializer
 
 class TeamInfoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """This Api is for Retreving, Updating and Deleting a particular Record based on the id passed in the request."""
     queryset = Team_Info.objects.all()
     serializer_class  = TeamInfoSerializer
 
